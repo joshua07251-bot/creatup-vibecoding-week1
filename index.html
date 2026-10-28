@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1강 · 사진 제출 꾸러미 제작기 | CREATUP 크리터스 3기</title>
+<meta name="description" content="크리터스 3기 바이브코딩 1강 강의 교안: 사진 제출 꾸러미 제작기">
+<meta name="theme-color" content="#FAF8F3">
+<link rel="icon" href="logo.jpg">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#FAF8F3;--surface:#FFFFFF;--soft:#F0EBE2;--line:#E4DED3;--ink:#171717;--muted:#6B6B6B;
+  --accent:#D98142;--accent-ink:#A9561C;--accent-soft:#FBEADB;--sage:#E8EFE9;--sage-ink:#3F6B4E;
+  --shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.06);
+  --radius:20px;--fs:1rem;
+}
+html[data-theme="dark"]{
+  --bg:#141312;--surface:#1D1C1A;--soft:#262421;--line:#34312D;--ink:#F4F1EA;--muted:#A8A39A;
+  --accent:#E8955A;--accent-ink:#F2B184;--accent-soft:#3A2A1E;--sage:#1F2A23;--sage-ink:#9FD0AE;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+}
+html[data-present="on"]{--fs:1.18rem}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;font-size:var(--fs);line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+/* header */
+header.top{position:sticky;top:0;z-index:40;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
+.logo{width:32px;height:32px;border-radius:9px;object-fit:cover}
+.brand small{font-weight:600;color:var(--muted);letter-spacing:0}
+.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;height:38px;min-width:38px;padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:.86rem;font-weight:600;transition:.15s}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent-ink)}
+.icon-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* tabs */
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:0 0 10px}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:0;background:transparent;padding:9px 16px;border-radius:999px;cursor:pointer;font-weight:650;color:var(--muted);font-size:.93rem;white-space:nowrap;transition:.15s}
+.tab:hover{color:var(--ink);background:var(--soft)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.tab .k{opacity:.5;font-size:.75rem;margin-right:6px}
+/* timer strip */
+.timer{display:flex;align-items:center;gap:12px;padding:10px 0 12px;border-top:1px dashed var(--line);font-size:.88rem}
+.timer .clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.05rem;min-width:118px}
+.timer .now{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.timer .now b{color:var(--ink)}
+.track{position:relative;height:6px;background:var(--soft);border-radius:99px;overflow:hidden;flex:1.3;min-width:120px}
+.track i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--accent),#E9B07E);border-radius:99px;width:0;transition:width .5s}
+.mini{white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:5px 10px;cursor:pointer;font-weight:650;font-size:.82rem}
+.mini.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+/* panels */
+main{padding:44px 0 90px}
+section.panel{display:none;animation:fade .35s ease}
+section.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:750;color:var(--accent-ink);background:var(--accent-soft);padding:5px 12px;border-radius:999px;letter-spacing:.02em}
+h1{font-size:clamp(2rem,4.6vw,3.6rem);line-height:1.14;letter-spacing:-.035em;margin:16px 0 14px;font-weight:850}
+h2{font-size:clamp(1.45rem,2.6vw,2rem);letter-spacing:-.03em;margin:0 0 8px;font-weight:800;line-height:1.25}
+h3{font-size:1.12rem;margin:0 0 6px;font-weight:780;letter-spacing:-.02em}
+.lead{font-size:1.12em;color:var(--muted);max-width:760px}
+.grad{background:linear-gradient(100deg,var(--accent) 0%,#E7A66E 60%,var(--accent-ink) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:0 0 20px;flex-wrap:wrap}
+.sec-head p{margin:0;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:0 16px}.brand small{display:none}.timer .now{display:none}.hide-sm{display:none}.bar{height:56px}.timer{gap:8px;padding:8px 0 10px}.timer .clock{font-size:.92rem;min-width:0;white-space:nowrap}.track{min-width:40px}nav.tabs{padding-bottom:8px}.tab{padding:7px 13px;font-size:.88rem}main{padding-top:28px}}
+.bento{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-auto-rows:minmax(150px,auto);gap:16px;margin-top:28px}
+.bento .hero{grid-row:span 2;background:linear-gradient(160deg,var(--ink),#33302B);color:#F7F3EA;border:0}
+html[data-theme="dark"] .bento .hero{background:linear-gradient(160deg,#2A2622,#1A1816)}
+.bento .hero .quote{font-size:1.5rem;font-weight:780;line-height:1.38;letter-spacing:-.02em;margin:10px 0 18px}
+.bento .hero .tag{color:#F2B184}
+@media (max-width:900px){.bento{grid-template-columns:1fr 1fr}.bento .hero{grid-column:span 2;grid-row:auto}}
+@media (max-width:620px){.bento{grid-template-columns:1fr}.bento .hero{grid-column:auto}}
+.stat{font-size:2.3rem;font-weight:850;letter-spacing:-.04em;line-height:1}
+.muted{color:var(--muted)}
+.pill{display:inline-block;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--soft);color:var(--muted);margin:2px 4px 2px 0}
+.pill.sage{background:var(--sage);color:var(--sage-ink)}.pill.acc{background:var(--accent-soft);color:var(--accent-ink)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}
+.flow span{background:var(--soft);padding:8px 14px;border-radius:12px;font-weight:700;font-size:.92rem}
+.flow em{color:var(--accent);font-style:normal;font-weight:800}
+ul.clean{list-style:none;padding:0;margin:8px 0 0}
+ul.clean li{padding:7px 0 7px 26px;position:relative;border-bottom:1px dashed var(--line)}
+ul.clean li:last-child{border-bottom:0}
+ul.clean li::before{content:"";position:absolute;left:4px;top:15px;width:9px;height:9px;border-radius:3px;background:var(--accent)}
+ul.clean.no li::before{background:#B9B3A8;border-radius:50%}
+.callout{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 14px 14px 0;margin:16px 0}
+.callout.sage{border-color:var(--sage-ink);background:var(--sage)}
+.script{background:var(--soft);border-radius:14px;padding:14px 18px;font-weight:600;position:relative;margin:12px 0}
+.script::before{content:"강사 멘트";display:block;font-size:.72rem;font-weight:800;color:var(--accent-ink);letter-spacing:.05em;margin-bottom:4px}
+/* timeline */
+.tl{position:relative;display:grid;gap:12px}
+.seg{border:1px solid var(--line);background:var(--surface);border-radius:18px;overflow:hidden;transition:border-color .2s, box-shadow .2s}
+.seg.current{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.seg.done{opacity:.72}
+.seg summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:118px 1fr auto;gap:14px;align-items:center;padding:16px 20px}
+.seg summary::-webkit-details-marker{display:none}
+.seg .time{font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent-ink);font-size:.95rem}
+.seg .t{font-weight:780;font-size:1.06rem}
+.seg .g{color:var(--muted);font-size:.9rem}
+.seg .chev{transition:transform .2s;color:var(--muted)}
+.seg[open] .chev{transform:rotate(180deg)}
+.seg .body{padding:2px 20px 20px 152px}
+@media (max-width:700px){.seg summary{grid-template-columns:1fr auto}.seg .time{grid-column:1/-1}.seg .body{padding:0 18px 18px}}
+.seg .body h4{margin:14px 0 4px;font-size:.84rem;color:var(--muted);letter-spacing:.04em}
+.seg .jump{margin-top:12px}
+.done-box{background:var(--sage);color:var(--sage-ink);border-radius:12px;padding:10px 14px;font-weight:700;margin-top:12px}
+.ver{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;background:var(--soft);padding:2px 8px;border-radius:6px}
+/* prompts */
+.prompt{display:flex;flex-direction:column;gap:10px}
+.prompt pre{margin:0;white-space:pre-wrap;word-break:keep-all;font-family:inherit;background:var(--soft);border-radius:14px;padding:16px;font-size:.95rem;line-height:1.7}
+.prompt .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.copy{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 12px;font-weight:700;font-size:.82rem;cursor:pointer}
+.copy.ok{background:var(--sage-ink);color:#fff;border-color:var(--sage-ink)}
+.filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:650;font-size:.86rem}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+/* demo */
+.demo{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}
+@media (max-width:900px){.demo{grid-template-columns:1fr}}
+.drop{border:2px dashed var(--line);border-radius:18px;padding:28px;text-align:center;cursor:pointer;transition:.2s;background:var(--surface)}
+.drop.over,.drop:hover{border-color:var(--accent);background:var(--accent-soft)}
+.drop b{display:block;font-size:1.05rem}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:14px}
+.ph{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.ph .thumb{aspect-ratio:1;background:var(--soft) center/cover no-repeat;position:relative}
+.ph .no{position:absolute;top:8px;left:8px;background:var(--ink);color:var(--bg);font-weight:800;font-size:.75rem;padding:2px 8px;border-radius:8px}
+.ph .warn{position:absolute;bottom:8px;left:8px;right:8px;display:flex;gap:4px;flex-wrap:wrap}
+.ph .warn span{background:rgba(23,23,23,.78);color:#fff;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:6px}
+.ph .meta{padding:9px 10px;font-size:.78rem}
+.ph .nm{font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all}
+.ph .out{color:var(--accent-ink);font-weight:700;font-family:ui-monospace,Menlo,monospace;font-size:.72rem;word-break:break-all;margin-top:3px}
+.ph .ctl{display:flex;gap:4px;padding:0 8px 9px;flex-wrap:wrap}
+.ph .ctl button,.ph .ctl select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 6px;font-size:.75rem;cursor:pointer}
+.ph .ctl select{flex:1;min-width:0}
+.panel-set{display:grid;gap:14px;align-content:start}
+.field label{display:block;font-weight:750;font-size:.86rem;margin-bottom:6px}
+.field input[type=text],.field input[type=number]{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px}
+.seg-ctl{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:11px 13px;cursor:pointer;background:var(--surface)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt small{display:block;color:var(--muted)}
+.big{width:100%;border:0;border-radius:14px;padding:14px;font-weight:800;font-size:1rem;cursor:pointer;background:var(--ink);color:var(--bg);transition:.15s}
+.big:disabled{opacity:.45;cursor:not-allowed}
+.big:not(:disabled):hover{background:var(--accent)}
+.prog{height:8px;background:var(--soft);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.status{font-size:.86rem;color:var(--muted);min-height:1.3em}
+.privacy{font-size:.82rem;color:var(--sage-ink);background:var(--sage);border-radius:12px;padding:9px 12px;font-weight:650}
+/* checklist */
+.ring{--p:0;width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--soft) 0);display:grid;place-items:center;flex:0 0 auto}
+.ring div{width:92px;height:92px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-weight:850;font-size:1.4rem}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px dashed var(--line);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--accent);margin-top:3px;flex:0 0 auto}
+.check:has(input:checked) span{color:var(--muted);text-decoration:line-through}
+/* faq */
+details.qa{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:0 18px;margin-bottom:10px}
+details.qa summary{cursor:pointer;padding:15px 0;font-weight:750;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::after{content:"+";color:var(--accent);font-weight:900}
+details.qa[open] summary::after{content:"–"}
+details.qa div{padding:0 0 16px;color:var(--muted)}
+textarea.note{width:100%;min-height:120px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px;resize:vertical;font:inherit}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:60}
+.toast.on{opacity:1;transform:translateX(-50%)}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:.85rem}
+.kbd{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 6px;background:var(--surface)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  header.top,.tools,.timer,nav.tabs,.toast,.demo,#demo .drop,.copy,.no-print{display:none!important}
+  section.panel{display:block!important;page-break-after:always}
+  body{background:#fff;color:#000}
+  .card,.seg{box-shadow:none}
+  details{display:block}details>*{display:block}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <div class="brand"><img class="logo" src="logo.jpg" alt="CREATUP 로고">CREATUP <small>· 크리터스 3기 바이브코딩 · 1강</small></div>
+      <div class="tools">
+        <button class="icon-btn" id="presentBtn" aria-pressed="false" title="발표 모드: 글자 크게">발표 모드</button>
+        <button class="icon-btn" id="themeBtn" aria-pressed="false" title="어두운 화면">◐<span class="hide-sm">다크</span></button>
+        <button class="icon-btn hide-sm" id="printBtn" title="교안 인쇄">인쇄</button>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="교안 메뉴">
+      <button class="tab" role="tab" data-tab="overview"><span class="k">1</span>수업 개요</button>
+      <button class="tab" role="tab" data-tab="flow"><span class="k">2</span>120분 진행안</button>
+      <button class="tab" role="tab" data-tab="prompts"><span class="k">3</span>요청문</button>
+      <button class="tab" role="tab" data-tab="demo"><span class="k">4</span>완성 예제</button>
+      <button class="tab" role="tab" data-tab="check"><span class="k">5</span>체크리스트</button>
+      <button class="tab" role="tab" data-tab="biz"><span class="k">6</span>확장 · 과제</button>
+      <button class="tab" role="tab" data-tab="prep"><span class="k">7</span>강사 준비</button>
+    </nav>
+    <div class="timer" aria-live="polite">
+      <span class="clock" id="clock">00:00 / 120:00</span>
+      <div class="track"><i id="trackFill"></i></div>
+      <span class="now" id="nowSeg">수업 타이머 · <b>시작 전</b></span>
+      <button class="mini primary" id="tStart">시작</button>
+      <button class="mini" id="tReset" title="타이머 초기화">초기화</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- 1. 개요 -->
+<section class="panel" id="overview" role="tabpanel">
+  <span class="eyebrow">정규 과정 01 / 06 · 120분</span>
+  <h1>사진 30장,<br><span class="grad">한 번에 정리하는 도구</span>를 만듭니다.</h1>
+  <p class="lead">사진마다 크기와 파일명을 바꾸던 반복 작업을, 사진만 넣으면 다시 쓸 수 있는 작은 웹앱으로 바꿉니다. 코드를 외우는 수업이 아니라, AI에게 설명하고 실행하고 고치는 흐름을 익히는 수업입니다.</p>
+  <div class="flow"><span>사진 넣기</span><em>→</em><span>규격 선택</span><em>→</em><span>순서 · 자르기</span><em>→</em><span>파일명</span><em>→</em><span>ZIP 받기</span></div>
+
+  <div class="bento">
+    <div class="card hero">
+      <span class="pill acc tag">오늘의 핵심 메시지</span>
+      <div class="quote">“오늘 만드는 것은 사진 한 장이 아니라, 다음에도 사진만 넣으면 다시 쓸 수 있는 도구입니다.”</div>
+      <p style="color:#CFC8BC;margin:0">강사와 공통 앱을 함께 만들고 → 부분 수정 → 직접 사용 → 사업 확장 아이디어까지 연결합니다.</p>
+    </div>
+    <div class="card"><div class="stat">120<span style="font-size:1rem">분</span></div><p class="muted" style="margin:8px 0 0">휴식 5분 포함 · 4번의 개선 단계</p></div>
+    <div class="card"><div class="stat">5<span style="font-size:1rem">개</span></div><p class="muted" style="margin:8px 0 0">핵심 기능: 사진 목록 · 규격 · 순서·자르기 · 파일명 · ZIP</p></div>
+    <div class="card"><div class="stat">0<span style="font-size:1rem">원</span></div><p class="muted" style="margin:8px 0 0">앱 실행 시 AI API 호출 없음 · 사진은 브라우저 안에서만 처리</p></div>
+    <div class="card" style="background:var(--sage);border-color:transparent"><h3 style="color:var(--sage-ink)">대상</h3><p style="margin:0">코딩 경험이 없는 일반인. 강사가 준비한 시작용 틀과 공통 사진으로 진행합니다.</p></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>수업 후 수강생이 할 수 있어야 하는 것</h3>
+      <ul class="clean">
+        <li>만들고 싶은 앱의 입력과 결과를 설명한다.</li>
+        <li>AI가 만든 첫 화면을 직접 실행한다.</li>
+        <li>불편한 부분을 구체적으로 수정 요청한다.</li>
+        <li>예제 사진으로 결과가 맞는지 확인한다.</li>
+        <li>작동하는 버전을 보관하고 다시 사용한다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>이번 수업에서 하지 않는 것</h3>
+      <ul class="clean no">
+        <li>AI 이미지 생성 · 배경 제거 · 얼굴 보정</li>
+        <li>로그인 · 회원가입 · 결제 · 클라우드 자동 업로드</li>
+        <li>원본 폴더의 파일 직접 변경</li>
+        <li>HEIC · RAW · 영상 처리</li>
+        <li>용량을 특정 KB 이하로 강제하는 기능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="sec-head"><div><h3>수업 여는 질문</h3><p>첫 화면에 크게 띄우고 해본 일에 손을 들게 합니다.</p></div></div>
+    <div class="script">“사진 30장, 가로 크기 맞추고 이름 바꿔서 압축해 보내주세요. 몇 분 걸릴까요?”</div>
+    <div class="flow" style="margin-top:4px">
+      <span class="pill">블로그 사진 크기 줄이기</span><span class="pill">상품 등록 사진 모양 맞추기</span><span class="pill">행사 사진 순서 정리</span><span class="pill">과제·체험단 파일명 변경</span><span class="pill">사진 압축해서 전달</span>
+    </div>
+    <div class="script">“각각은 어려운 일이 아닙니다. 그런데 사진이 많아지고, 다음 주에도 똑같이 해야 하면 번거롭죠. 오늘은 그 반복 작업을 대신할 작은 도구를 만들어보겠습니다.”</div>
+  </div>
+</section>
+
+<!-- 2. 진행안 -->
+<section class="panel" id="flow" role="tabpanel">
+  <div class="sec-head">
+    <div><span class="eyebrow">120분 진행안</span><h2 style="margin-top:12px">단계마다 만들고, 써보고, 고칩니다.</h2><p>타이머를 시작하면 지금 진행 중인 단계가 자동으로 강조됩니다.</p></div>
+    <div class="no-print" style="display:flex;gap:8px"><button class="mini" id="openAll">모두 펼치기</button><button class="mini" id="closeAll">모두 접기</button></div>
+  </div>
+  <div class="tl" id="timeline"></div>
+</section>
+
+<!-- 3. 요청문 -->
+<section class="panel" id="prompts" role="tabpanel">
+  <div class="sec-head"><div><span class="eyebrow">AI 요청문</span><h2 style="margin-top:12px">한꺼번에가 아니라, 한 단계씩 요청합니다.</h2><p>버튼을 누르면 복사됩니다. 수강생 화면에 띄우고 그대로 사용하세요.</p></div></div>
+  <div class="filter" id="pFilter"></div>
+  <div class="grid g2" id="pList"></div>
+</section>
+
+<!-- 4. 데모 -->
+<section class="panel" id="demo" role="tabpanel">
+  <div class="sec-head"><div><span class="eyebrow">완성 예제 · 실제 작동</span><h2 style="margin-top:12px">오늘 수업의 도착 지점입니다.</h2><p>수업 시작 10분에 시연하고, 마지막 검증 미션에서 결과를 비교합니다.</p></div></div>
+  <div class="demo">
+    <div>
+      <label class="drop" id="drop" tabindex="0">
+        <input type="file" id="fileIn" accept="image/jpeg,image/png" multiple hidden>
+        <b>사진을 끌어다 놓거나 눌러서 선택하세요</b>
+        <span class="muted">JPG · PNG · 여러 장 가능</span>
+      </label>
+      <div class="status" id="listInfo" style="margin-top:10px"></div>
+      <div class="list" id="phList"></div>
+    </div>
+    <aside class="panel-set">
+      <div class="card" style="padding:18px">
+        <div class="field"><label>출력 규격 <span class="muted" style="font-weight:500">(수업용 예시 규격)</span></label>
+          <div class="seg-ctl" id="presetBox">
+            <label class="opt"><input type="radio" name="preset" value="keep" checked><span><b>원본 비율 유지</b><small>긴 변 최대 1,600px</small></span></label>
+            <label class="opt"><input type="radio" name="preset" value="square"><span><b>정사각형</b><small>1,200 × 1,200px · 잘림 가능</small></span></label>
+            <label class="opt"><input type="radio" name="preset" value="land"><span><b>가로형</b><small>1,280 × 960px · 잘림 가능</small></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:18px">
+        <div class="grid" style="grid-template-columns:1fr 110px;gap:10px">
+          <div class="field"><label for="baseName">공통 이름</label><input type="text" id="baseName" value="토파스책상" maxlength="40"></div>
+          <div class="field"><label for="startNo">시작 번호</label><input type="number" id="startNo" value="1" min="0" max="999"></div>
+        </div>
+        <p class="muted" style="font-size:.8rem;margin:8px 0 0">쓸 수 없는 문자(\ / : * ? " &lt; &gt; |)는 _ 로 바뀝니다.</p>
+      </div>
+      <button class="big" id="zipBtn" disabled>ZIP으로 내려받기</button>
+      <div class="prog"><i id="progFill"></i></div>
+      <div class="status" id="zipStatus"></div>
+      <div class="privacy">🔒 사진은 이 브라우저 안에서만 처리됩니다. 서버로 전송하지 않고, 원본 파일도 바꾸지 않습니다.</div>
+    </aside>
+  </div>
+</section>
+
+<!-- 5. 체크리스트 -->
+<section class="panel" id="check" role="tabpanel">
+  <div class="sec-head"><div><span class="eyebrow">완료 체크리스트</span><h2 style="margin-top:12px">완성 화면보다, 확인한 결과가 중요합니다.</h2><p>체크 상태는 이 기기에 저장됩니다.</p></div><button class="mini no-print" id="resetCheck">체크 초기화</button></div>
+  <div class="grid g2">
+    <div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+      <div class="ring" id="ring"><div id="ringTxt">0%</div></div>
+      <div><h3>오늘의 완주도</h3><p class="muted" style="margin:0">필수 8개를 모두 체크하면 1강 완주입니다.<br>시간이 부족하면 세밀한 디자인보다 <b>ZIP 받기와 결과 확인</b>을 남기세요.</p></div>
+    </div>
+    <div class="card"><h3>최종 검증 미션</h3>
+      <p class="muted" style="margin:0 0 8px">사진 12장을 넣고 한 장을 삭제한 뒤 내려받습니다.</p>
+      <div class="flow" style="margin:0"><span>결과 11장</span><span>정사각형 1,200px</span><span>05번부터</span><span>공통 이름</span></div>
+      <p class="muted" style="margin:10px 0 0;font-size:.9rem">압축을 풀어 장수 · 번호 05~15 · 실제 크기 · 잘린 위치 · 정상 열림 · 원본 보존을 확인합니다.</p>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>필수</h3><div id="ckMust"></div></div>
+    <div class="card"><h3>확장 사고</h3><div id="ckPlus"></div>
+      <h3 style="margin-top:18px">수업 메모</h3>
+      <textarea class="note" id="memo" placeholder="수업 중 떠오른 수정 아이디어나 막힌 지점을 적어두세요. 이 기기에 자동 저장됩니다."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 확장 · 과제 -->
+<section class="panel" id="biz" role="tabpanel">
+  <div class="sec-head"><div><span class="eyebrow">110~120분 · 내 도구에서 사업 아이디어로</span><h2 style="margin-top:12px">기능을 더하기 전에, 필요한 사람을 먼저 떠올립니다.</h2><p>확장 기능은 수업에서 구현하지 않고, 방향만 소개합니다.</p></div></div>
+  <div class="grid g3">
+    <div class="card"><span class="pill acc">사례 01</span><h3 style="margin-top:10px">쇼핑몰 전용 사진 준비 도구</h3><ul class="clean"><li>업체 이미지 규격을 버튼으로 제공</li><li>상품명 기준 파일명 규칙</li><li>직원 작업 방식 통일</li></ul></div>
+    <div class="card"><span class="pill acc">사례 02</span><h3 style="margin-top:10px">체험단 운영사 제출 도우미</h3><ul class="clean"><li>캠페인별 규격·파일명 규칙</li><li>필요한 사진 수 부족 안내</li><li>제출 전 사진 꾸러미 준비</li></ul></div>
+    <div class="card"><span class="pill acc">사례 03</span><h3 style="margin-top:10px">학원·기관 과제 정리 도구</h3><ul class="clean"><li>과제별 규격 설정</li><li>제출 번호·순서 통일</li><li>담당자 반복 정리 감소</li></ul></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>한 줄 사업 아이디어 만들기</h3>
+      <p class="muted" style="margin:0 0 12px">빈칸을 채우면 문장이 완성됩니다.</p>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label for="ideaWho">누구에게</label><input type="text" id="ideaWho" placeholder="예: 동네 꽃집"></div>
+        <div class="field"><label for="ideaWhat">어떤 기능을 더하면</label><input type="text" id="ideaWhat" placeholder="예: 상품별 규격 버튼"></div>
+      </div>
+      <div class="callout" id="ideaOut" style="font-weight:700">“이 앱을 ______에게 맞춰, ______ 기능을 더하면 도움이 되겠다.”</div>
+      <button class="copy" id="ideaCopy">문장 복사</button>
+    </div>
+    <div class="card">
+      <h3>무엇에 대한 대가를 받을 수 있을까?</h3>
+      <div class="flow"><span>맞춤 제작</span><span>초기 규격 설정</span><span>운영 지원</span></div>
+      <div class="callout sage">회원 관리 · 실제 제출 · 결제 · 고객 데이터 관리는 후속 개발 영역입니다. 수익을 보장하지 않습니다.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="sec-head" style="margin-bottom:8px"><div><span class="eyebrow">과제</span><h3 style="margin-top:10px">내 실제 사진 10장으로 한 번 사용해보기</h3></div></div>
+    <div class="grid g4" style="gap:12px">
+      <div><span class="pill">1</span><p style="margin:6px 0 0">어떤 작업에 사용했는지 적기</p></div>
+      <div><span class="pill">2</span><p style="margin:6px 0 0">불편했던 점 한 가지 찾기</p></div>
+      <div><span class="pill">3</span><p style="margin:6px 0 0">그 부분만 AI에게 수정 요청하기</p></div>
+      <div><span class="pill">4</span><p style="margin:6px 0 0">수정 전·후 차이와, 필요한 사람 한 명 기록</p></div>
+    </div>
+    <div class="script" style="margin-top:18px">“오늘의 목표는 코드를 잘 쓰는 사람이 되는 게 아닙니다. 반복되는 불편을 발견하고, 작은 도구로 바꿔보는 사람이 되는 것입니다.”</div>
+  </div>
+</section>
+
+<!-- 7. 강사 준비 -->
+<section class="panel" id="prep" role="tabpanel">
+  <div class="sec-head"><div><span class="eyebrow">강사 전용</span><h2 style="margin-top:12px">수업 전에 준비하고, 반드시 검증할 것</h2><p>실행 환경 문제로 수업 시간이 소모되지 않도록 합니다.</p></div></div>
+  <div class="grid g2">
+    <div class="card"><h3>A. 시작용 앱</h3><ul class="clean"><li>앱 제목과 빈 작업 영역</li><li>사진 선택 버튼 자리 · 규격 설정 영역 · 결과 영역</li><li>ZIP 생성 등 필요한 라이브러리 미리 준비</li></ul><p class="muted" style="margin:10px 0 0;font-size:.9rem">핵심 기능을 완성해 나눠주는 것이 아니라, 설치·패키지 오류 해결부터 시작하지 않게 하는 수준입니다.</p></div>
+    <div class="card"><h3>B. 공통 예제 사진 12장</h3><div class="flow" style="margin:6px 0 0"><span class="pill">가로</span><span class="pill">세로</span><span class="pill">작은 사진</span><span class="pill">큰 사진</span><span class="pill">투명 PNG</span><span class="pill">긴 파일명</span><span class="pill">같은 이름 다른 사진</span></div><p class="muted" style="margin:10px 0 0;font-size:.9rem">실습은 12장, 강사는 30장 처리도 사전 확인합니다.</p></div>
+    <div class="card"><h3>C. 단계별 복구본</h3><ul class="clean"><li><span class="ver">01_사진목록완료</span></li><li><span class="ver">02_규격선택완료</span></li><li><span class="ver">03_파일명완료</span></li><li><span class="ver">04_사용가능완성본</span></li></ul><p class="muted" style="margin:10px 0 0;font-size:.9rem">막힌 수강생은 해당 단계 복구본으로 합류합니다.</p></div>
+    <div class="card"><h3>D. 수업 전 검증</h3><div id="ckPrep"></div></div>
+  </div>
+  <h3 style="margin:28px 0 12px">자주 막히는 상황</h3>
+  <details class="qa"><summary>AI가 기능을 한꺼번에 바꿔서 이전 기능이 망가졌어요.</summary><div>직전 보관 버전으로 돌아간 뒤, “이 부분만 고쳐줘. 다른 기능은 건드리지 마.”를 붙여 다시 요청합니다. 한 번에 하나의 문제만 수정합니다.</div></details>
+  <details class="qa"><summary>세로 사진이 옆으로 누워서 나와요.</summary><div>사진의 방향 정보(EXIF)를 반영해 그리도록 요청합니다. 수업 전 공통 예제의 세로 사진으로 미리 확인합니다.</div></details>
+  <details class="qa"><summary>투명 PNG가 검게 저장돼요.</summary><div>JPEG는 투명도를 담지 못합니다. 변환 전에 흰 배경을 먼저 채우도록 요청합니다.</div></details>
+  <details class="qa"><summary>순서를 바꿨는데 파일명 번호가 그대로예요.</summary><div>파일명을 사진에 고정해 둔 경우입니다. “파일명은 현재 목록 순서로 매번 다시 계산해줘.”라고 요청합니다.</div></details>
+  <details class="qa"><summary>수강생 한 명의 오류로 진행이 멈춰요.</summary><div>오류 해결은 휴식 시간이나 개별 안내로 넘기고, 해당 단계 복구본으로 합류시킵니다. 전체 진행을 멈추지 않습니다.</div></details>
+  <div class="callout">위 준비 항목은 <b>강사의 제작 전 검증 과제</b>입니다. 이 교안의 완성 예제는 참고 구현이며, 수강생 실습 환경(사용할 AI 코딩 도구)에서의 파일 수정·실행·복구는 수업 전에 별도로 확인해야 합니다.</div>
+</section>
+
+</main>
+<footer><div class="wrap">CREATUP · 크리터스 3기 · 비개발자를 위한 바이브코딩 · 1강 사진 제출 꾸러미 제작기 · 단축키 <span class="kbd">1</span>~<span class="kbd">7</span> 메뉴 이동, <span class="kbd">P</span> 발표 모드</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get:(k,d)=>{try{const v=localStorage.getItem('cw1:'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem('cw1:'+k,JSON.stringify(v))}catch(e){}}};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1600)};
+async function copyText(txt,btn){try{await navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}toast('복사했습니다');if(btn){btn.classList.add('ok');const o=btn.textContent;btn.textContent='복사됨';setTimeout(()=>{btn.classList.remove('ok');btn.textContent=o},1300)}}
+
+/* ---------- tabs ---------- */
+const tabs=$$('.tab');
+function show(id,push){if(!document.getElementById(id))id='overview';tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});$$('section.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(push!==false)history.replaceState(null,'','#/'+id);window.scrollTo({top:0,behavior:'instant'})}
+tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t.dataset.tab));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n.dataset.tab)}})});
+const hid=()=>location.hash.replace(/^#\/?/,'');
+show(hid()||'overview',false);
+window.addEventListener('hashchange',()=>show(hid(),false));
+document.addEventListener('keydown',e=>{const tg=e.target.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tg)||e.metaKey||e.ctrlKey||e.altKey)return;if(/^[1-7]$/.test(e.key))show(tabs[+e.key-1].dataset.tab);if(e.key==='p'||e.key==='P')$('#presentBtn').click()});
+
+/* ---------- theme / present / print ---------- */
+const root=document.documentElement;
+function setTheme(d){root.dataset.theme=d?'dark':'light';$('#themeBtn').setAttribute('aria-pressed',d);store.set('dark',d)}
+setTheme(store.get('dark',matchMedia('(prefers-color-scheme: dark)').matches));
+$('#themeBtn').onclick=()=>setTheme(root.dataset.theme!=='dark');
+function setPresent(on){root.dataset.present=on?'on':'off';$('#presentBtn').setAttribute('aria-pressed',on);store.set('present',on)}
+setPresent(store.get('present',false));
+$('#presentBtn').onclick=()=>setPresent(root.dataset.present!=='on');
+$('#printBtn').onclick=()=>{$$('details').forEach(d=>d.open=true);window.print()};
+
+/* ---------- timeline data ---------- */
+const SEG=[
+ {s:0,e:10,t:'문제 공감과 완성 앱 체험',g:'왜 만드는지 먼저 이해하기',act:['사진을 하나씩 정리하는 기존 작업을 짧게 보여줍니다.','완성 예제에 같은 사진을 넣고 규격·이름을 바꿔 ZIP으로 받습니다.','압축을 풀어 결과를 함께 확인합니다.'],stu:'자신이 반복하는 비슷한 작업 하나를 적습니다. “나는 ___ 사진을 정리할 때 ___ 작업을 반복한다.”',say:'앱이 만들어졌다는 것보다 중요한 건, 결과물이 내가 요청한 대로 나왔는지입니다.',done:'앱의 입력과 결과를 한 문장으로 설명할 수 있습니다.',jump:'demo'},
+ {s:10,e:20,t:'앱의 설계도 정하기',g:'AI에게 막연하게 한꺼번에 요청하지 않기',act:['누가 쓰나: 사진을 규격에 맞춰 제출하는 사람','무엇을 넣나: 여러 장의 사진 / 무엇을 정하나: 규격·순서·파일명','무엇을 받나: 정리된 사진 ZIP','화면 구획: 왼쪽 사진 목록 · 오른쪽 설정 · 아래 결과와 다운로드'],stu:'시작용 앱을 열어 실행하고, AI에게 첫 기능을 요청합니다.',say:'우선 사진 여러 장을 선택하면 썸네일 목록이 나오는 화면부터 만들겠습니다.',done:'자신의 앱이 열리고, 첫 작업 범위를 이해합니다.',jump:'prompts'},
+ {s:20,e:35,t:'1차 제작 · 사진을 넣고 확인하기',g:'파일 입력과 화면 출력 연결',act:['JPG·PNG 여러 장 선택, 썸네일 목록','파일명과 가로·세로 크기 표시, 개별 삭제','테스트: 1장 · 여러 장 · 세로 사진 · 사진이 아닌 파일 · 삭제','일부러 발견: 큰 썸네일 · 긴 파일명 넘침 · 안내 없는 오류'],stu:'“불편해요” 대신 무엇이 어떻게 불편한지 구체적으로 수정 요청합니다.',say:'파일명이 길면 카드 밖으로 나갑니다. 두 줄까지만 보여주고, 전체 이름은 따로 확인할 수 있게 해주세요.',done:'공통 사진 12장이 목록에 표시되고 삭제가 됩니다.',ver:'01_사진목록완료',jump:'prompts'},
+ {s:35,e:55,t:'2차 제작 · 규격을 고르면 결과가 달라지게',g:'보기 좋은 화면에서 실제 기능이 있는 앱으로',act:['세 가지 출력 규격 선택과 의미 표시','사진별 예상 출력 크기 · 잘림 안내','원본보다 작은 사진은 확대 여부 안내','같은 세로 사진을 원본 비율 / 정사각형으로 비교'],stu:'규격을 바꿔가며 비율 찌그러짐 · 크기 표시 · 무리한 확대를 확인합니다.',say:'정사각형이 되었다고 끝일까요? 사진 속 중요한 부분이 잘리면 쓸 수 있을까요?',done:'규격 변경에 따라 미리보기와 예상 크기가 바뀝니다.',ver:'02_규격선택완료',jump:'prompts'},
+ {s:55,e:60,t:'휴식 · 진행 상태 확인',g:'복구본으로 합류할 사람 정리',act:['사진 목록까지 완료 / 규격 선택까지 완료 / 실행 문제로 합류 필요, 세 상태로 구분','휴식 후 합류할 복구본을 안내'],stu:'자신의 상태를 손으로 표시하고 쉬어갑니다.',say:'지금 막혀 있어도 괜찮습니다. 다음 단계는 복구본에서 함께 출발합니다.',done:'모든 수강생이 같은 출발선에서 3차 제작을 시작합니다.'},
+ {s:60,e:80,t:'3차 제작 · 순서와 자르기 개선',g:'자동 처리의 불편을 사용자가 조절하도록',act:['사진 앞/뒤 이동 · 현재 순서 번호','자르기 결과 미리보기','잘리는 위치 선택: 좌·중앙·우 / 위·중앙·아래','공통 미션: 이 사진을 첫 번째로, 상품이 가운데 보이게'],stu:'순서 번호 갱신 · 바꾼 사진만 적용 · 규격 전환 후 상태를 확인합니다.',say:'자동화는 사용자의 선택을 없애는 것이 아니라, 반복은 줄이고 중요한 선택만 남기는 것입니다.',done:'원하는 사진을 첫 번째에 두고, 잘리는 위치를 조정할 수 있습니다.',jump:'prompts'},
+ {s:80,e:95,t:'4차 제작 · 파일명 규칙 만들기',g:'사람이 쓰는 규칙을 앱의 동작으로',act:['공통 이름 · 시작 번호 · 두 자리 순번','최종 파일명 미리보기, 쓸 수 없는 문자 정리','테스트: 순서 변경 · 중간 삭제 · 빈 이름 · 특수문자 · 시작 번호 5'],stu:'목록 순서와 파일명 번호가 항상 일치하는지 확인합니다.',say:'규칙을 설명할 수 있으면, 그 규칙을 지키는 도구를 만들 수 있습니다.',done:'목록 순서와 파일명 순서가 일치합니다.',ver:'03_파일명완료',jump:'prompts'},
+ {s:95,e:110,t:'최종 완성 · ZIP 다운로드와 결과 검증',g:'앱 화면이 아니라 실제 결과물까지',act:['선택 규격으로 JPEG 사본 생성, 투명 배경은 흰색','정한 파일명으로 ZIP 구성, 처리 중 상태 · 중복 클릭 방지','최종 미션: 12장 → 1장 삭제 → 정사각형 · 05번부터','압축을 풀어 장수 · 번호 · 크기 · 잘린 위치 · 원본 보존 확인'],stu:'다운로드한 ZIP을 풀어 결과를 직접 확인합니다.',say:'오늘 우리가 확인할 것은 화면이 아니라, 실제로 받은 파일입니다.',done:'다운로드한 ZIP을 풀어 결과를 확인합니다.',ver:'04_사용가능완성본',jump:'check'},
+ {s:110,e:120,t:'내 도구에서 사업 아이디어로',g:'기능 추가보다, 필요한 사람을 먼저',act:['완성한 도구 돌아보기 (3분)','쇼핑몰 · 체험단 운영사 · 학원 확장 사례 (4분)','한 줄 사업 아이디어 완성 (3분)'],stu:'“이 앱을 ___에게 맞춰, ___ 기능을 더하면 도움이 되겠다.”',say:'우리는 사진 정리 작업을 한 것이 아니라, 사진 정리를 반복해서 해주는 도구를 만들었습니다.',done:'이 도구가 필요한 대상과 추가 기능 하나를 말할 수 있습니다.',jump:'biz'}
+];
+const tl=$('#timeline');
+const fmt=m=>String(m).padStart(2,'0');
+tl.innerHTML=SEG.map((x,i)=>`<details class="seg" data-i="${i}" ${i===0?'open':''}><summary><span class="time">${fmt(x.s)}–${fmt(x.e)}분</span><span><span class="t">${x.t}</span><br><span class="g">${x.g}</span></span><span class="chev">▾</span></summary><div class="body"><h4>진행</h4><ul class="clean">${x.act.map(a=>`<li>${a}</li>`).join('')}</ul><h4>수강생 활동</h4><p style="margin:0">${x.stu}</p><div class="script">“${x.say}”</div><div class="done-box">완료 기준 · ${x.done}${x.ver?` <span class="ver" style="margin-left:6px">${x.ver}</span>`:''}</div>${x.jump?`<button class="mini jump no-print" data-go="${x.jump}">관련 자료 보기 →</button>`:''}</div></details>`).join('');
+tl.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
+$('#openAll').onclick=()=>$$('.seg').forEach(d=>d.open=true);
+$('#closeAll').onclick=()=>$$('.seg').forEach(d=>d.open=false);
+
+/* ---------- class timer ---------- */
+const TOTAL=120*60;let tState=store.get('timer',{run:false,acc:0,since:0});let lastSeg=-1;
+const elapsed=()=>Math.min(TOTAL,tState.acc+(tState.run?(Date.now()-tState.since)/1000:0));
+function tick(){const el=elapsed(),m=Math.floor(el/60),s=Math.floor(el%60);$('#clock').textContent=`${fmt(m)}:${fmt(s)} / 120:00`;$('#trackFill').style.width=(el/TOTAL*100)+'%';const mins=el/60;let idx=SEG.findIndex(x=>mins>=x.s&&mins<x.e);if(el>=TOTAL)idx=SEG.length-1;
+ if(!tState.run&&el===0){$('#nowSeg').innerHTML='수업 타이머 · <b>시작 전</b>'}else{const x=SEG[idx];const left=Math.max(0,Math.ceil(x.e-mins));$('#nowSeg').innerHTML=`지금 · <b>${x.t}</b> · 이 단계 ${left}분 남음`}
+ $$('.seg').forEach((d,i)=>{d.classList.toggle('current',(tState.run||el>0)&&i===idx);d.classList.toggle('done',(tState.run||el>0)&&i<idx)});
+ if(tState.run&&idx!==lastSeg){if(lastSeg!==-1){const d=$(`.seg[data-i="${idx}"]`);if(d)d.open=true;toast(`다음 단계: ${SEG[idx].t}`)}lastSeg=idx}
+ if(el>=TOTAL&&tState.run){tState={run:false,acc:TOTAL,since:0};store.set('timer',tState);toast('수업 시간이 끝났습니다')}
+ $('#tStart').textContent=tState.run?'일시정지':(el>0?'계속':'시작')}
+$('#tStart').onclick=()=>{if(tState.run){tState={run:false,acc:elapsed(),since:0}}else{tState={run:true,acc:tState.acc,since:Date.now()}}store.set('timer',tState);tick()};
+$('#tReset').onclick=()=>{if(elapsed()>0&&!confirm('타이머를 처음으로 되돌릴까요?'))return;tState={run:false,acc:0,since:0};lastSeg=-1;store.set('timer',tState);tick()};
+tick();setInterval(tick,1000);
+
+/* ---------- prompts ---------- */
+const PR=[
+ {c:'설계',t:'0 · 첫 요청: 앱의 범위 알려주기',w:'10~20분',p:'사진 제출 꾸러미를 만드는 웹앱을 만들 거야.\n사용자는 사진 여러 장을 넣고, 규격·순서·파일명을 정한 뒤, 정리된 사진을 ZIP으로 받아.\n오늘은 한 단계씩 만들 거니까, 지금은 화면 구성만 잡아줘.\n왼쪽은 사진 목록, 오른쪽은 설정, 아래는 결과와 다운로드 영역이야.\n사진은 외부로 전송하지 말고 브라우저 안에서만 처리해줘.'},
+ {c:'1차',t:'1 · 사진 넣고 목록 보기',w:'20~35분',p:'사진 여러 장을 선택하면 썸네일 목록으로 보여줘.\nJPG와 PNG만 받고, 다른 파일은 “지원하지 않는 파일”이라고 안내해줘.\n사진마다 파일명, 가로·세로 크기, 삭제 버튼을 보여줘.'},
+ {c:'1차',t:'1-수정 · 긴 파일명 정리',w:'20~35분',p:'파일명이 길면 카드 밖으로 나가.\n두 줄까지만 보여주고, 마우스를 올리면 전체 이름이 보이게 해줘.\n이 부분만 고치고 다른 기능은 건드리지 마.'},
+ {c:'2차',t:'2 · 출력 규격 선택',w:'35~55분',p:'출력 규격 세 가지를 고를 수 있게 해줘.\n① 원본 비율 유지, 긴 변 최대 1600px\n② 정사각형 1200×1200px\n③ 가로형 1280×960px\n사진마다 예상 출력 크기를 보여주고, 잘림이 생기면 “잘림”, 원본이 더 작으면 “확대 필요”라고 표시해줘.\n사진 비율이 찌그러지면 안 돼.'},
+ {c:'3차',t:'3 · 순서 변경과 자르기 위치',w:'60~80분',p:'사진마다 앞으로·뒤로 이동 버튼과 순서 번호를 넣어줘.\n고정 비율로 자를 때는 잘린 결과를 미리 보여주고,\n잘리는 위치를 고를 수 있게 해줘. 가로 사진은 왼쪽·가운데·오른쪽, 세로 사진은 위·가운데·아래야.\n위치를 바꾼 사진에만 적용돼야 해.'},
+ {c:'4차',t:'4 · 파일명 규칙',w:'80~95분',p:'공통 이름과 시작 번호를 입력하면 “공통이름_01.jpg” 형식으로 파일명을 만들어 사진마다 미리 보여줘.\n순서를 바꾸거나 사진을 지우면 번호를 현재 목록 순서대로 다시 계산해줘.\n파일명에 쓸 수 없는 문자( \\ / : * ? " < > | )는 _ 로 바꾸고, 이름이 비어 있으면 photo를 써줘.'},
+ {c:'완성',t:'5 · ZIP 다운로드',w:'95~110분',p:'다운로드 버튼을 누르면 선택한 규격·순서·자르기 위치로 JPEG 사본을 만들고, 정한 파일명으로 ZIP 파일 하나에 담아 내려받게 해줘.\n투명 배경은 흰색으로 채워줘.\n처리 중에는 진행 상황을 보여주고, 버튼을 다시 누를 수 없게 해줘.\n원본 파일은 바꾸지 마.'},
+ {c:'공통',t:'오류 보고 공식',w:'언제든',p:'[어떤 행동]을 했더니 [무엇이 나왔어].\n원래는 [이렇게 나와야 해].\n이 부분만 고쳐줘. 다른 기능은 건드리지 마.'},
+ {c:'공통',t:'되돌리기 요청',w:'언제든',p:'방금 수정 후에 [이전에 되던 기능]이 안 돼.\n방금 바꾼 부분을 되돌리고, [원래 고치려던 문제]만 다시 고쳐줘.'}
+];
+const cats=['전체',...new Set(PR.map(x=>x.c))];let pCat='전체';
+$('#pFilter').innerHTML=cats.map(c=>`<button class="chip" aria-pressed="${c==='전체'}" data-c="${c}">${c}</button>`).join('');
+function renderP(){$('#pList').innerHTML=PR.filter(x=>pCat==='전체'||x.c===pCat).map(x=>`<div class="card prompt"><div class="row"><div><span class="pill acc">${x.c}</span><span class="pill">${x.w}</span><h3 style="margin-top:8px">${x.t}</h3></div><button class="copy" data-p="${PR.indexOf(x)}">복사</button></div><pre>${x.p.replace(/</g,'&lt;')}</pre></div>`).join('')}
+renderP();
+$('#pFilter').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;pCat=b.dataset.c;$$('#pFilter .chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderP()});
+$('#pList').addEventListener('click',e=>{const b=e.target.closest('.copy');if(b)copyText(PR[+b.dataset.p].p,b)});
+
+/* ---------- checklists ---------- */
+const CK={must:['사진 여러 장을 넣을 수 있다.','규격을 바꾸면 결과가 달라진다.','사진 순서를 바꿀 수 있다.','파일명을 다운로드 전에 확인할 수 있다.','ZIP을 내려받고 압축을 풀 수 있다.','실제 사진 수·크기·이름이 요청과 일치한다.','원본 파일을 변경하지 않는다.','작동하는 버전을 다시 열 수 있다.'],plus:['이 도구가 필요한 사람이나 업체를 한 곳 정했다.','그 대상에게 필요한 추가 기능 하나를 설명할 수 있다.'],prep:['AI 코딩 도구에서 파일 수정·실행·복구 확인','수강생용 브라우저에서 사진 처리·ZIP 다운로드 확인','세로 사진 방향 정상 확인','사진이 외부 서버로 전송되지 않는 구조 확인','다운로드한 파일이 실제로 열리는지 확인','30장 처리 시간과 한도 확인']};
+const ckState=store.get('ck',{});
+function renderCk(key,el){el.innerHTML=CK[key].map((t,i)=>`<label class="check"><input type="checkbox" data-k="${key}${i}" ${ckState[key+i]?'checked':''}><span>${t}</span></label>`).join('')}
+renderCk('must',$('#ckMust'));renderCk('plus',$('#ckPlus'));renderCk('prep',$('#ckPrep'));
+function ring(){const n=CK.must.filter((_,i)=>ckState['must'+i]).length,p=Math.round(n/CK.must.length*100);$('#ring').style.setProperty('--p',p);$('#ringTxt').textContent=p+'%'}
+document.addEventListener('change',e=>{if(e.target.matches('.check input')){ckState[e.target.dataset.k]=e.target.checked;store.set('ck',ckState);ring();if(e.target.dataset.k.startsWith('must')&&CK.must.every((_,i)=>ckState['must'+i]))toast('1강 완주! 🎉')}});
+ring();
+$('#resetCheck').onclick=()=>{if(!confirm('체크를 모두 지울까요?'))return;Object.keys(ckState).forEach(k=>delete ckState[k]);store.set('ck',ckState);renderCk('must',$('#ckMust'));renderCk('plus',$('#ckPlus'));renderCk('prep',$('#ckPrep'));ring()};
+const memo=$('#memo');memo.value=store.get('memo','');memo.addEventListener('input',()=>store.set('memo',memo.value));
+
+/* ---------- idea ---------- */
+function idea(){const w=$('#ideaWho').value.trim()||'______',f=$('#ideaWhat').value.trim()||'______';$('#ideaOut').textContent=`“이 앱을 ${w}에게 맞춰, ${f} 기능을 더하면 도움이 되겠다.”`}
+$('#ideaWho').addEventListener('input',idea);$('#ideaWhat').addEventListener('input',idea);
+$('#ideaCopy').onclick=e=>copyText($('#ideaOut').textContent,e.currentTarget);
+
+/* ---------- demo app ---------- */
+const PRESET={keep:{max:1600},square:{w:1200,h:1200},land:{w:1280,h:960}};
+let items=[];let busy=false;
+const fileIn=$('#fileIn'),drop=$('#drop');
+drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileIn.click()}});
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
+fileIn.addEventListener('change',()=>{const fs=[...fileIn.files];fileIn.value='';addFiles(fs)});
+const preset=()=>document.querySelector('input[name=preset]:checked').value;
+document.querySelectorAll('input[name=preset]').forEach(r=>r.addEventListener('change',renderList));
+$('#baseName').addEventListener('input',renderList);$('#startNo').addEventListener('input',renderList);
+async function addFiles(fl){let bad=0;for(const f of fl){if(!/^image\/(jpeg|png)$/.test(f.type)){bad++;continue}
+ try{const bmp=await createImageBitmap(f,{imageOrientation:'from-image'});items.push({id:Math.random().toString(36).slice(2),file:f,name:f.name,w:bmp.width,h:bmp.height,bmp,url:URL.createObjectURL(f),pos:'c'})}catch(e){bad++}}
+ renderList();if(bad)toast(`지원하지 않는 파일 ${bad}개는 제외했습니다`)}
+function outSize(it){const p=preset();if(p==='keep'){const k=Math.min(1,PRESET.keep.max/Math.max(it.w,it.h));return{w:Math.round(it.w*k),h:Math.round(it.h*k),crop:false,up:false}}const P=PRESET[p];const crop=Math.abs(it.w/it.h-P.w/P.h)>0.01;const sc=Math.max(P.w/it.w,P.h/it.h);return{w:P.w,h:P.h,crop,up:sc>1}}
+const safe=s=>(s.replace(/[\\/:*?"<>|]/g,'_').trim()||'photo');
+function fname(i){const base=safe($('#baseName').value);const st=Math.max(0,parseInt($('#startNo').value||'1',10)||0);return `${base}_${String(st+i).padStart(2,'0')}.jpg`}
+function posLabel(it){return it.w>=it.h?[['l','왼쪽'],['c','가운데'],['r','오른쪽']]:[['t','위'],['c','가운데'],['b','아래']]}
+function renderList(){const L=$('#phList');
+ L.innerHTML=items.map((it,i)=>{const o=outSize(it);const pl=posLabel(it);const bg=o.crop?`background-position:${{l:'0% 50%',r:'100% 50%',t:'50% 0%',b:'50% 100%',c:'50% 50%'}[it.pos]}`:'background-size:contain;background-color:var(--soft)';
+ return `<div class="ph" data-id="${it.id}"><div class="thumb" style="background-image:url('${it.url}');${bg};aspect-ratio:${o.w}/${o.h}"><span class="no">${i+1}</span><div class="warn">${o.crop?'<span>잘림</span>':''}${o.up?'<span>확대 필요</span>':''}</div></div>
+ <div class="meta"><div class="nm" title="${it.name.replace(/"/g,'&quot;')}">${it.name.replace(/</g,'&lt;')}</div><div class="muted">${it.w}×${it.h} → ${o.w}×${o.h}</div><div class="out">${fname(i).replace(/</g,'&lt;')}</div></div>
+ <div class="ctl"><button data-a="up" aria-label="앞으로" ${i===0?'disabled':''}>◀</button><button data-a="down" aria-label="뒤로" ${i===items.length-1?'disabled':''}>▶</button>${o.crop?`<select data-a="pos" aria-label="잘리는 위치">${pl.map(([v,l])=>`<option value="${v}" ${it.pos===v?'selected':''}>${l}</option>`).join('')}</select>`:''}<button data-a="del" aria-label="삭제">삭제</button></div></div>`}).join('');
+ $('#listInfo').textContent=items.length?`사진 ${items.length}장 · 순서를 바꾸면 파일명 번호도 함께 바뀝니다.`:'';
+ $('#zipBtn').disabled=!items.length||busy}
+$('#phList').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const id=b.closest('.ph').dataset.id;const i=items.findIndex(x=>x.id===id);const a=b.dataset.a;
+ if(a==='del'){URL.revokeObjectURL(items[i].url);items[i].bmp.close&&items[i].bmp.close();items.splice(i,1)}
+ if(a==='up'&&i>0)[items[i-1],items[i]]=[items[i],items[i-1]];
+ if(a==='down'&&i<items.length-1)[items[i+1],items[i]]=[items[i],items[i+1]];renderList()});
+$('#phList').addEventListener('change',e=>{if(e.target.dataset.a!=='pos')return;const id=e.target.closest('.ph').dataset.id;items.find(x=>x.id===id).pos=e.target.value;renderList()});
+function render(it){const o=outSize(it);const c=document.createElement('canvas');c.width=o.w;c.height=o.h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,o.w,o.h);x.imageSmoothingQuality='high';
+ if(!o.crop&&preset()==='keep'){x.drawImage(it.bmp,0,0,o.w,o.h)}else{const sc=Math.max(o.w/it.w,o.h/it.h);const sw=o.w/sc,sh=o.h/sc;let sx=(it.w-sw)/2,sy=(it.h-sh)/2;if(it.pos==='l')sx=0;if(it.pos==='r')sx=it.w-sw;if(it.pos==='t')sy=0;if(it.pos==='b')sy=it.h-sh;x.drawImage(it.bmp,sx,sy,sw,sh,0,0,o.w,o.h)}
+ return new Promise(r=>c.toBlob(b=>r(b),'image/jpeg',0.9))}
+/* minimal ZIP (store) */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return d=>{let c=0xFFFFFFFF;for(let i=0;i<d.length;i++)c=t[(c^d[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}})();
+function zip(files){const enc=new TextEncoder();const parts=[],cen=[];let off=0;const now=new Date();const dt=((now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1))&0xFFFF,dd=(((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate())&0xFFFF;
+ for(const f of files){const nm=enc.encode(f.name),crc=CRC(f.data),sz=f.data.length;const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,dt,true);h.setUint16(12,dd,true);h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);parts.push(new Uint8Array(h.buffer),nm,f.data);
+  const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);cen.push(new Uint8Array(c.buffer),nm);off+=30+nm.length+sz}
+ const cs=cen.reduce((a,b)=>a+b.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);return new Blob([...parts,...cen,new Uint8Array(e.buffer)],{type:'application/zip'})}
+$('#zipBtn').onclick=async()=>{if(busy||!items.length)return;busy=true;$('#zipBtn').disabled=true;const out=[];try{for(let i=0;i<items.length;i++){$('#zipStatus').textContent=`${i+1} / ${items.length}장 변환 중…`;$('#progFill').style.width=((i)/items.length*100)+'%';const b=await render(items[i]);out.push({name:fname(i),data:new Uint8Array(await b.arrayBuffer())})}
+ $('#progFill').style.width='100%';const z=zip(out);const a=document.createElement('a');a.href=URL.createObjectURL(z);a.download=`${safe($('#baseName').value)}_사진꾸러미.zip`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);$('#zipStatus').textContent=`완료 · ${out.length}장, ${out[0].name} ~ ${out[out.length-1].name}`;toast('ZIP 파일을 내려받았습니다')}
+ catch(err){$('#zipStatus').textContent='처리 중 문제가 생겼습니다. 사진 수를 줄여 다시 시도해주세요.'}finally{busy=false;renderList()}};
+renderList();
+window.__cw1={items,zip,fname,outSize};
+})();
+</script>
+</body>
+</html>
