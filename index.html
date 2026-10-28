@@ -94,6 +94,10 @@ ul.clean.no li::before{background:#B9B3A8;border-radius:50%}
 .callout{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 14px 14px 0;margin:16px 0}
 .callout.sage{border-color:var(--sage-ink);background:var(--sage)}
 .script{background:var(--soft);border-radius:14px;padding:14px 18px;font-weight:600;position:relative;margin:12px 0}
+html:not([data-teacher="on"]) .teacher-only{display:none!important}
+.teacher-badge{display:none;font-size:.72rem;font-weight:800;color:#fff;background:var(--accent);padding:3px 9px;border-radius:99px;margin-left:8px}
+html[data-teacher="on"] .teacher-badge{display:inline-block}
+.ask{font-size:1.25em;font-weight:780;letter-spacing:-.02em;background:var(--soft);border-radius:14px;padding:16px 20px;margin:12px 0}
 .script::before{content:"강사 멘트";display:block;font-size:.72rem;font-weight:800;color:var(--accent-ink);letter-spacing:.05em;margin-bottom:4px}
 /* timeline */
 .tl{position:relative;display:grid;gap:12px}
@@ -187,7 +191,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 <header class="top">
   <div class="wrap">
     <div class="bar">
-      <div class="brand"><img class="logo" src="logo.jpg" alt="CREATUP 로고">CREATUP <small>· 크리터스 3기 바이브코딩 · 1강</small></div>
+      <div class="brand"><img class="logo" src="logo.jpg" alt="CREATUP 로고">CREATUP<span class="teacher-badge">강사 모드</span> <small>· 크리터스 3기 바이브코딩 · 1강</small></div>
       <div class="tools">
         <button class="icon-btn" id="presentBtn" aria-pressed="false" title="발표 모드: 글자 크게">발표 모드</button>
         <button class="icon-btn" id="themeBtn" aria-pressed="false" title="어두운 화면">◐<span class="hide-sm">다크</span></button>
@@ -201,7 +205,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
       <button class="tab" role="tab" data-tab="demo"><span class="k">4</span>완성 예제</button>
       <button class="tab" role="tab" data-tab="check"><span class="k">5</span>체크리스트</button>
       <button class="tab" role="tab" data-tab="biz"><span class="k">6</span>확장 · 과제</button>
-      <button class="tab" role="tab" data-tab="prep"><span class="k">7</span>강사 준비</button>
+      <button class="tab teacher-only" role="tab" data-tab="prep"><span class="k">7</span>강사 준비</button>
     </nav>
     <div class="timer" aria-live="polite">
       <span class="clock" id="clock">00:00 / 120:00</span>
@@ -258,12 +262,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
   </div>
 
   <div class="card" style="margin-top:16px">
-    <div class="sec-head"><div><h3>수업 여는 질문</h3><p>첫 화면에 크게 띄우고 해본 일에 손을 들게 합니다.</p></div></div>
-    <div class="script">“사진 30장, 가로 크기 맞추고 이름 바꿔서 압축해 보내주세요. 몇 분 걸릴까요?”</div>
+    <div class="sec-head"><div><h3>수업 여는 질문</h3><p>이런 일, 해본 적 있나요?</p></div></div>
+    <div class="ask">“사진 30장, 가로 크기 맞추고 이름 바꿔서 압축해 보내주세요. 몇 분 걸릴까요?”</div>
     <div class="flow" style="margin-top:4px">
       <span class="pill">블로그 사진 크기 줄이기</span><span class="pill">상품 등록 사진 모양 맞추기</span><span class="pill">행사 사진 순서 정리</span><span class="pill">과제·체험단 파일명 변경</span><span class="pill">사진 압축해서 전달</span>
     </div>
-    <div class="script">“각각은 어려운 일이 아닙니다. 그런데 사진이 많아지고, 다음 주에도 똑같이 해야 하면 번거롭죠. 오늘은 그 반복 작업을 대신할 작은 도구를 만들어보겠습니다.”</div>
+    <div class="script teacher-only">“각각은 어려운 일이 아닙니다. 그런데 사진이 많아지고, 다음 주에도 똑같이 해야 하면 번거롭죠. 오늘은 그 반복 작업을 대신할 작은 도구를 만들어보겠습니다.”</div>
   </div>
 </section>
 
@@ -377,12 +381,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
       <div><span class="pill">3</span><p style="margin:6px 0 0">그 부분만 AI에게 수정 요청하기</p></div>
       <div><span class="pill">4</span><p style="margin:6px 0 0">수정 전·후 차이와, 필요한 사람 한 명 기록</p></div>
     </div>
-    <div class="script" style="margin-top:18px">“오늘의 목표는 코드를 잘 쓰는 사람이 되는 게 아닙니다. 반복되는 불편을 발견하고, 작은 도구로 바꿔보는 사람이 되는 것입니다.”</div>
+    <div class="script teacher-only" style="margin-top:18px">“오늘의 목표는 코드를 잘 쓰는 사람이 되는 게 아닙니다. 반복되는 불편을 발견하고, 작은 도구로 바꿔보는 사람이 되는 것입니다.”</div>
   </div>
 </section>
 
 <!-- 7. 강사 준비 -->
-<section class="panel" id="prep" role="tabpanel">
+<section class="panel teacher-only" id="prep" role="tabpanel">
   <div class="sec-head"><div><span class="eyebrow">강사 전용</span><h2 style="margin-top:12px">수업 전에 준비하고, 반드시 검증할 것</h2><p>실행 환경 문제로 수업 시간이 소모되지 않도록 합니다.</p></div></div>
   <div class="grid g2">
     <div class="card"><h3>A. 시작용 앱</h3><ul class="clean"><li>앱 제목과 빈 작업 영역</li><li>사진 선택 버튼 자리 · 규격 설정 영역 · 결과 영역</li><li>ZIP 생성 등 필요한 라이브러리 미리 준비</li></ul><p class="muted" style="margin:10px 0 0;font-size:.9rem">핵심 기능을 완성해 나눠주는 것이 아니라, 설치·패키지 오류 해결부터 시작하지 않게 하는 수준입니다.</p></div>
@@ -400,7 +404,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 </section>
 
 </main>
-<footer><div class="wrap">CREATUP · 크리터스 3기 · 비개발자를 위한 바이브코딩 · 1강 사진 제출 꾸러미 제작기 · 단축키 <span class="kbd">1</span>~<span class="kbd">7</span> 메뉴 이동, <span class="kbd">P</span> 발표 모드</div></footer>
+<footer><div class="wrap">CREATUP · 크리터스 3기 · 비개발자를 위한 바이브코딩 · 1강 사진 제출 꾸러미 제작기 · 단축키 <span class="kbd">1</span>~<span class="kbd">6</span> 메뉴 이동, <span class="kbd">P</span> 발표 모드</div></footer>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -410,14 +414,21 @@ const store={get:(k,d)=>{try{const v=localStorage.getItem('cw1:'+k);return v===n
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1600)};
 async function copyText(txt,btn){try{await navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}toast('복사했습니다');if(btn){btn.classList.add('ok');const o=btn.textContent;btn.textContent='복사됨';setTimeout(()=>{btn.classList.remove('ok');btn.textContent=o},1300)}}
 
+/* ---------- teacher mode (hidden by default) ---------- */
+const qs=new URLSearchParams(location.search);
+if(qs.get('mode')==='teacher')store.set('teacher',true);
+if(qs.get('mode')==='student')store.set('teacher',false);
+document.documentElement.dataset.teacher=store.get('teacher',false)?'on':'off';
+function setTeacher(on){document.documentElement.dataset.teacher=on?'on':'off';store.set('teacher',on);if(!on&&location.hash.replace(/^#\/?/,'')==='prep')show('overview')}
+document.addEventListener('keydown',e=>{if(e.shiftKey&&(e.key==='T'||e.key==='t')&&!['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){setTeacher(document.documentElement.dataset.teacher!=='on');toast(document.documentElement.dataset.teacher==='on'?'강사 모드 켜짐':'수강생 화면')}});
 /* ---------- tabs ---------- */
 const tabs=$$('.tab');
-function show(id,push){if(!document.getElementById(id))id='overview';tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});$$('section.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(push!==false)history.replaceState(null,'','#/'+id);window.scrollTo({top:0,behavior:'instant'})}
-tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t.dataset.tab));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n.dataset.tab)}})});
+function show(id,push){const el=document.getElementById(id);if(!el||(el.classList.contains('teacher-only')&&document.documentElement.dataset.teacher!=='on')){id='overview';push=true}tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});$$('section.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(push!==false)history.replaceState(null,'','#/'+id);window.scrollTo({top:0,behavior:'instant'})}
+tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t.dataset.tab));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const vis=tabs.filter(x=>x.offsetParent!==null);const j=vis.indexOf(t);const n=vis[(j+(e.key==='ArrowRight'?1:vis.length-1))%vis.length];n.focus();show(n.dataset.tab)}})});
 const hid=()=>location.hash.replace(/^#\/?/,'');
 show(hid()||'overview',false);
 window.addEventListener('hashchange',()=>show(hid(),false));
-document.addEventListener('keydown',e=>{const tg=e.target.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tg)||e.metaKey||e.ctrlKey||e.altKey)return;if(/^[1-7]$/.test(e.key))show(tabs[+e.key-1].dataset.tab);if(e.key==='p'||e.key==='P')$('#presentBtn').click()});
+document.addEventListener('keydown',e=>{const tg=e.target.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tg)||e.metaKey||e.ctrlKey||e.altKey)return;if(/^[1-7]$/.test(e.key)){const t=tabs[+e.key-1];if(t&&t.offsetParent!==null)show(t.dataset.tab)}if(e.key==='p'||e.key==='P')$('#presentBtn').click()});
 
 /* ---------- theme / present / print ---------- */
 const root=document.documentElement;
@@ -443,7 +454,7 @@ const SEG=[
 ];
 const tl=$('#timeline');
 const fmt=m=>String(m).padStart(2,'0');
-tl.innerHTML=SEG.map((x,i)=>`<details class="seg" data-i="${i}" ${i===0?'open':''}><summary><span class="time">${fmt(x.s)}–${fmt(x.e)}분</span><span><span class="t">${x.t}</span><br><span class="g">${x.g}</span></span><span class="chev">▾</span></summary><div class="body"><h4>진행</h4><ul class="clean">${x.act.map(a=>`<li>${a}</li>`).join('')}</ul><h4>수강생 활동</h4><p style="margin:0">${x.stu}</p><div class="script">“${x.say}”</div><div class="done-box">완료 기준 · ${x.done}${x.ver?` <span class="ver" style="margin-left:6px">${x.ver}</span>`:''}</div>${x.jump?`<button class="mini jump no-print" data-go="${x.jump}">관련 자료 보기 →</button>`:''}</div></details>`).join('');
+tl.innerHTML=SEG.map((x,i)=>`<details class="seg" data-i="${i}" ${i===0?'open':''}><summary><span class="time">${fmt(x.s)}–${fmt(x.e)}분</span><span><span class="t">${x.t}</span><br><span class="g">${x.g}</span></span><span class="chev">▾</span></summary><div class="body"><h4>진행</h4><ul class="clean">${x.act.map(a=>`<li>${a}</li>`).join('')}</ul><h4>수강생 활동</h4><p style="margin:0">${x.stu}</p><div class="script teacher-only">“${x.say}”</div><div class="done-box">완료 기준 · ${x.done}${x.ver?` <span class="ver" style="margin-left:6px">${x.ver}</span>`:''}</div>${x.jump?`<button class="mini jump no-print" data-go="${x.jump}">관련 자료 보기 →</button>`:''}</div></details>`).join('');
 tl.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
 $('#openAll').onclick=()=>$$('.seg').forEach(d=>d.open=true);
 $('#closeAll').onclick=()=>$$('.seg').forEach(d=>d.open=false);
