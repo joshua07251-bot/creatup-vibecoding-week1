@@ -187,13 +187,51 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 .follow.on{display:flex}
 .follow button{border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.8rem;cursor:pointer;background:var(--accent);color:#fff}
 .follow.paused{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
-@media print{.sync-pop,.follow{display:none!important}}
+.print-only{display:none}
+@page{size:A4;margin:14mm 12mm 15mm}
 @media print{
-  header.top,.tools,.timer,nav.tabs,.toast,.demo,#demo .drop,.copy,.no-print{display:none!important}
-  section.panel{display:block!important;page-break-after:always}
-  body{background:#fff;color:#000}
-  .card,.seg{box-shadow:none}
-  details{display:block}details>*{display:block}
+  :root,html[data-theme="dark"]{--bg:#fff;--surface:#fff;--soft:#F3EFE8;--line:#E2DCD1;--ink:#171717;--muted:#5E5E5E;--accent:#D98142;--accent-ink:#A9561C;--accent-soft:#FBEADB;--sage:#E8EFE9;--sage-ink:#3F6B4E;--fs:10.2pt}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none!important;transition:none!important}
+  html,body{background:#fff!important}
+  html>:not(head):not(body),body>:not(main){display:none!important}
+  header.top,.timer,nav.tabs,.toast,.follow,.sync-pop,.copy,.mini,.no-print,.demo,.filter,footer,.big,.prog{display:none!important}
+  .print-only{display:block!important}
+  main.wrap{padding:0 2px!important;max-width:100%!important;width:100%}
+  #overview h1{font-size:21pt;margin:6px 0}
+  #overview .lead{font-size:9.6pt;margin:0}
+  #overview ul.clean li{font-size:9.4pt;padding:3px 0 3px 20px}
+  #overview .stat{font-size:16pt}
+  #overview .bento p{font-size:8.8pt;line-height:1.5}
+  #overview .bento{margin-top:10px}
+  #overview .grid{margin-top:10px!important}
+  #overview .card[style*="margin-top:16px"]{margin-top:10px!important}
+  #overview .sec-head{margin-bottom:6px}
+  .wrap{padding:0}
+  section.panel{display:block!important;break-before:page;padding-top:2mm}
+  section.panel#overview{break-before:auto}
+  .card,.seg,.prompt,details.qa,.callout,.script,.ask,.check{break-inside:avoid;box-shadow:none!important}
+  .card{padding:14px 16px;border-radius:14px}
+  h1{font-size:25pt;margin:8px 0}h2{font-size:16pt}h3{font-size:11.5pt}
+  .lead{font-size:10.5pt}
+  .bento{grid-template-columns:1.25fr 1fr 1fr;gap:10px;margin-top:14px}
+  .bento .hero .quote{font-size:12.5pt;margin:6px 0 10px}
+  .bento{grid-auto-rows:auto!important}
+  #overview .card{padding:12px 14px}
+  #overview .flow{margin-top:8px}
+  #overview .flow span{padding:5px 10px}
+  ul.clean li{padding:4px 0 4px 22px}ul.clean li::before{top:11px}
+  .script,.ask{padding:10px 14px;margin:8px 0}
+  .stat{font-size:20pt}
+  .grid{gap:10px}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+  .seg summary{padding:10px 14px;grid-template-columns:90px 1fr}.seg .chev{display:none}
+  .seg .body{padding:0 14px 12px 118px}
+  .seg.current{box-shadow:none;border-color:var(--line)}.seg.done{opacity:1}
+  .prompt pre{font-size:9.4pt;padding:10px 12px}
+  #pList{grid-template-columns:1fr 1fr}
+  textarea.note{min-height:90px;border-style:dashed}
+  .ring{width:90px;height:90px}.ring div{width:68px;height:68px;font-size:1.1rem}
+  .print-cover{display:flex!important;flex-direction:column;justify-content:space-between;height:265mm;break-after:page;padding:6mm 2mm}
+  .print-foot{display:block!important;margin-top:14px;font-size:8.5pt;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
 }
 </style>
 </head>
@@ -206,7 +244,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
         <button class="icon-btn teacher-only" id="syncBtn" aria-expanded="false"><span class="dot" id="syncDot"></span>수업 연동</button>
         <button class="icon-btn" id="presentBtn" aria-pressed="false" title="발표 모드: 글자 크게">발표 모드</button>
         <button class="icon-btn" id="themeBtn" aria-pressed="false" title="어두운 화면">◐<span class="hide-sm">다크</span></button>
-        <button class="icon-btn hide-sm" id="printBtn" title="교안 인쇄">인쇄</button>
+        <button class="icon-btn hide-sm" id="printBtn" title="강의안 전체 인쇄">인쇄</button>
+        <a class="icon-btn" id="pdfBtn" href="vibecoding-week1-handout.pdf" download="크리터스3기_바이브코딩_1강_강의안.pdf" title="강의안 PDF 저장" style="text-decoration:none">PDF<span class="hide-sm">&nbsp;저장</span></a>
       </div>
     </div>
     <nav class="tabs" role="tablist" aria-label="교안 메뉴">
@@ -229,6 +268,19 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 </header>
 
 <main class="wrap">
+<div class="print-cover print-only" aria-hidden="true">
+  <div style="display:flex;align-items:center;gap:10px"><img src="logo.jpg" alt="" style="width:40px;height:40px;border-radius:10px"><b style="font-size:13pt;letter-spacing:.02em">CREATUP</b><span style="color:#5E5E5E">· 크리터스 3기 · 비개발자를 위한 바이브코딩</span></div>
+  <div>
+    <div class="eyebrow">정규 과정 01 / 06 · 120분 강의안</div>
+    <div style="font-size:34pt;font-weight:850;letter-spacing:-.035em;line-height:1.15;margin:18px 0 14px">사진 제출 꾸러미<br><span class="grad">제작기</span></div>
+    <p style="font-size:13pt;color:#5E5E5E;max-width:520px;margin:0">사진 30장, 크기와 이름을 한 번에 정리하는<br>나만의 웹앱을 만들어요.</p>
+    <div class="flow" style="margin-top:26px"><span>사진 넣기</span><em>→</em><span>규격 선택</span><em>→</em><span>순서 · 자르기</span><em>→</em><span>파일명</span><em>→</em><span>ZIP 받기</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="card"><b>이 강의안에 담긴 것</b><p style="margin:6px 0 0;color:#5E5E5E">수업 개요 · 단계별 따라가기 · AI 요청문 · 완성 앱 안내 · 완료 체크 · 사업 아이디어와 과제</p></div>
+    <div class="card"><b>온라인 강의안</b><p style="margin:6px 0 0;color:#5E5E5E;word-break:break-all">joshua07251-bot.github.io/creatup-vibecoding-week1<br>완성 앱은 웹페이지에서 직접 써볼 수 있어요.</p></div>
+  </div>
+</div>
 
 <!-- 1. 개요 -->
 <section class="panel" id="overview" role="tabpanel">
@@ -301,6 +353,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 <!-- 4. 데모 -->
 <section class="panel" id="demo" role="tabpanel">
   <div class="sec-head"><div><span class="eyebrow">완성 앱 써보기 · 실제 작동</span><h2 style="margin-top:12px">오늘 이런 앱을 완성해요.</h2><p>내 사진을 넣어 직접 써보세요. 수업 마지막에 내가 만든 앱의 결과와 비교해 봅니다.</p></div></div>
+  <div class="callout print-only"><b>완성 앱은 온라인 강의안의 「완성 앱 써보기」 탭에서 직접 써보세요.</b><br>joshua07251-bot.github.io/creatup-vibecoding-week1 · 사진은 내 브라우저 안에서만 처리되고, 원본은 바뀌지 않아요.</div>
+  <div class="card print-only"><h3>완성 앱의 기능</h3><ul class="clean"><li>사진 여러 장 넣기 · 목록과 크기 확인 · 삭제</li><li>출력 규격 선택: 원본 비율(긴 변 1,600px) · 정사각형 1,200px · 가로형 1,280×960px</li><li>순서 바꾸기 · 잘리는 위치 고르기</li><li>공통 이름 + 시작 번호로 파일명 만들기</li><li>JPEG 사본을 ZIP 하나로 내려받기</li></ul></div>
   <div class="demo">
     <div>
       <label class="drop" id="drop" tabindex="0">
@@ -354,7 +408,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
     <div class="card"><h3>필수</h3><div id="ckMust"></div></div>
     <div class="card"><h3>한 걸음 더</h3><div id="ckPlus"></div>
       <h3 style="margin-top:18px">수업 메모</h3>
-      <textarea class="note" id="memo" placeholder="고치고 싶은 점, 막혔던 부분, 떠오른 아이디어를 적어두세요. 내 기기에 자동 저장됩니다."></textarea>
+      <textarea class="note" id="memo" aria-label="수업 메모" placeholder="고치고 싶은 점, 막혔던 부분, 떠오른 아이디어를 적어두세요. 내 기기에 자동 저장됩니다."></textarea>
     </div>
   </div>
 </section>
@@ -396,6 +450,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
   </div>
 </section>
 
+<div class="print-foot print-only">CREATUP · 크리터스 3기 바이브코딩 · 1강 사진 제출 꾸러미 제작기 · joshua07251-bot.github.io/creatup-vibecoding-week1</div>
 <!-- 7. 강사 준비 -->
 <section class="panel teacher-only" id="prep" role="tabpanel">
   <div class="sec-head"><div><span class="eyebrow">강사 전용</span><h2 style="margin-top:12px">수업 전에 준비하고, 반드시 검증할 것</h2><p>실행 환경 문제로 수업 시간이 소모되지 않도록 합니다.</p></div></div>
@@ -462,7 +517,10 @@ $('#themeBtn').onclick=()=>setTheme(root.dataset.theme!=='dark');
 function setPresent(on){root.dataset.present=on?'on':'off';$('#presentBtn').setAttribute('aria-pressed',on);store.set('present',on)}
 setPresent(store.get('present',false));
 $('#presentBtn').onclick=()=>setPresent(root.dataset.present!=='on');
-$('#printBtn').onclick=()=>{$$('details').forEach(d=>d.open=true);window.print()};
+let _openState=null;
+window.addEventListener('beforeprint',()=>{_openState=$$('details').map(d=>d.open);$$('details').forEach(d=>d.open=true)});
+window.addEventListener('afterprint',()=>{if(_openState)$$('details').forEach((d,i)=>d.open=_openState[i]);_openState=null});
+$('#printBtn').onclick=()=>window.print();
 
 /* ---------- timeline data ---------- */
 const SEG=[
