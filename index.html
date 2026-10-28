@@ -125,7 +125,7 @@ ul.clean.no li::before{background:#B9B3A8;border-radius:50%}
 /* demo */
 .demo{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}
 @media (max-width:900px){.demo{grid-template-columns:1fr}}
-.drop{border:2px dashed var(--line);border-radius:18px;padding:28px;text-align:center;cursor:pointer;transition:.2s;background:var(--surface)}
+.drop{display:block;border:2px dashed var(--line);border-radius:18px;padding:28px;text-align:center;cursor:pointer;transition:.2s;background:var(--surface)}
 .drop.over,.drop:hover{border-color:var(--accent);background:var(--accent-soft)}
 .drop b{display:block;font-size:1.05rem}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:14px}
@@ -517,7 +517,7 @@ function fname(i){const base=safe($('#baseName').value);const st=Math.max(0,pars
 function posLabel(it){return it.w>=it.h?[['l','왼쪽'],['c','가운데'],['r','오른쪽']]:[['t','위'],['c','가운데'],['b','아래']]}
 function renderList(){const L=$('#phList');
  L.innerHTML=items.map((it,i)=>{const o=outSize(it);const pl=posLabel(it);const bg=o.crop?`background-position:${{l:'0% 50%',r:'100% 50%',t:'50% 0%',b:'50% 100%',c:'50% 50%'}[it.pos]}`:'background-size:contain;background-color:var(--soft)';
- return `<div class="ph" data-id="${it.id}"><div class="thumb" style="background-image:url('${it.url}');${bg};aspect-ratio:${o.w}/${o.h}"><span class="no">${i+1}</span><div class="warn">${o.crop?'<span>잘림</span>':''}${o.up?'<span>확대 필요</span>':''}</div></div>
+ return `<div class="ph" data-id="${it.id}"><div class="thumb" style="background-image:url('${it.url}');${bg};aspect-ratio:${o.crop?o.w+'/'+o.h:'1'}"><span class="no">${i+1}</span><div class="warn">${o.crop?'<span>잘림</span>':''}${o.up?'<span>확대 필요</span>':''}</div></div>
  <div class="meta"><div class="nm" title="${it.name.replace(/"/g,'&quot;')}">${it.name.replace(/</g,'&lt;')}</div><div class="muted">${it.w}×${it.h} → ${o.w}×${o.h}</div><div class="out">${fname(i).replace(/</g,'&lt;')}</div></div>
  <div class="ctl"><button data-a="up" aria-label="앞으로" ${i===0?'disabled':''}>◀</button><button data-a="down" aria-label="뒤로" ${i===items.length-1?'disabled':''}>▶</button>${o.crop?`<select data-a="pos" aria-label="잘리는 위치">${pl.map(([v,l])=>`<option value="${v}" ${it.pos===v?'selected':''}>${l}</option>`).join('')}</select>`:''}<button data-a="del" aria-label="삭제">삭제</button></div></div>`}).join('');
  $('#listInfo').textContent=items.length?`사진 ${items.length}장 · 순서를 바꾸면 파일명 번호도 함께 바뀝니다.`:'';
