@@ -178,6 +178,16 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 .kbd{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 6px;background:var(--surface)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.sync-pop{position:fixed;top:72px;right:max(16px,calc((100vw - 1180px)/2 + 22px));z-index:55;width:min(360px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.18);padding:18px;display:none}
+.sync-pop.on{display:block}
+.sync-code{font-family:ui-monospace,Menlo,monospace;font-size:1.5rem;font-weight:800;letter-spacing:.12em;background:var(--soft);border-radius:12px;padding:8px 12px;text-align:center;margin:8px 0}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#B9B3A8;margin-right:6px;vertical-align:middle}
+.dot.live{background:#2FA35A;box-shadow:0 0 0 4px rgba(47,163,90,.18)}
+.follow{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:50;background:var(--ink);color:var(--bg);border-radius:999px;padding:8px 8px 8px 16px;display:none;align-items:center;gap:10px;font-weight:700;font-size:.88rem;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.follow.on{display:flex}
+.follow button{border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.8rem;cursor:pointer;background:var(--accent);color:#fff}
+.follow.paused{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+@media print{.sync-pop,.follow{display:none!important}}
 @media print{
   header.top,.tools,.timer,nav.tabs,.toast,.demo,#demo .drop,.copy,.no-print{display:none!important}
   section.panel{display:block!important;page-break-after:always}
@@ -193,6 +203,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
     <div class="bar">
       <div class="brand"><img class="logo" src="logo.jpg" alt="CREATUP 로고">CREATUP<span class="teacher-badge">강사 모드</span> <small>· 크리터스 3기 바이브코딩 · 1강</small></div>
       <div class="tools">
+        <button class="icon-btn teacher-only" id="syncBtn" aria-expanded="false"><span class="dot" id="syncDot"></span>수업 연동</button>
         <button class="icon-btn" id="presentBtn" aria-pressed="false" title="발표 모드: 글자 크게">발표 모드</button>
         <button class="icon-btn" id="themeBtn" aria-pressed="false" title="어두운 화면">◐<span class="hide-sm">다크</span></button>
         <button class="icon-btn hide-sm" id="printBtn" title="교안 인쇄">인쇄</button>
@@ -406,6 +417,19 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 </main>
 <footer><div class="wrap">CREATUP · 크리터스 3기 · 비개발자를 위한 바이브코딩 · 1강 사진 제출 꾸러미 제작기 · 단축키 <span class="kbd">1</span>~<span class="kbd">6</span> 메뉴 이동, <span class="kbd">P</span> 발표 모드</div></footer>
 <div class="toast" id="toast"></div>
+<div class="sync-pop teacher-only" id="syncPop" role="dialog" aria-label="수업 연동">
+  <h3 style="margin:0">수강생 화면 연동</h3>
+  <p class="muted" style="margin:4px 0 0;font-size:.88rem">켜두면 이 화면의 탭 · 진행 단계 · 타이머가 수강생 링크 화면에 그대로 반영됩니다.</p>
+  <div class="sync-code" id="syncCode">-</div>
+  <div style="display:grid;gap:8px">
+    <button class="big" id="syncToggle">연동 시작</button>
+    <button class="copy" id="syncCopy" style="padding:10px">수강생 링크 복사</button>
+    <button class="mini" id="syncNew">새 연동 코드 만들기</button>
+  </div>
+  <p class="muted" style="margin:10px 0 0;font-size:.78rem">탭 이름과 진행 상태만 공개 중계 서비스(ntfy.sh)로 전송됩니다. 사진·메모·체크 내용은 전송하지 않습니다.</p>
+</div>
+<div class="follow" id="followBar"><span id="followTxt"><span class="dot live"></span>강사 화면을 따라가는 중</span><button id="followBtn">잠시 멈추기</button></div>
+
 
 <script>
 (()=>{
@@ -423,7 +447,7 @@ function setTeacher(on){document.documentElement.dataset.teacher=on?'on':'off';s
 document.addEventListener('keydown',e=>{if(e.shiftKey&&(e.key==='T'||e.key==='t')&&!['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){setTeacher(document.documentElement.dataset.teacher!=='on');toast(document.documentElement.dataset.teacher==='on'?'강사 모드 켜짐':'수강생 화면')}});
 /* ---------- tabs ---------- */
 const tabs=$$('.tab');
-function show(id,push){const el=document.getElementById(id);if(!el||(el.classList.contains('teacher-only')&&document.documentElement.dataset.teacher!=='on')){id='overview';push=true}tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});$$('section.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(push!==false)history.replaceState(null,'','#/'+id);window.scrollTo({top:0,behavior:'instant'})}
+function show(id,push){const el=document.getElementById(id);if(!el||(el.classList.contains('teacher-only')&&document.documentElement.dataset.teacher!=='on')){id='overview';push=true}tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});$$('section.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(push!==false)history.replaceState(null,'','#/'+id);window.__pub&&window.__pub();window.scrollTo({top:0,behavior:'instant'})}
 tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t.dataset.tab));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const vis=tabs.filter(x=>x.offsetParent!==null);const j=vis.indexOf(t);const n=vis[(j+(e.key==='ArrowRight'?1:vis.length-1))%vis.length];n.focus();show(n.dataset.tab)}})});
 const hid=()=>location.hash.replace(/^#\/?/,'');
 show(hid()||'overview',false);
@@ -468,10 +492,50 @@ function tick(){const el=elapsed(),m=Math.floor(el/60),s=Math.floor(el%60);$('#c
  if(tState.run&&idx!==lastSeg){if(lastSeg!==-1){const d=$(`.seg[data-i="${idx}"]`);if(d)d.open=true;toast(`다음 단계: ${SEG[idx].t}`)}lastSeg=idx}
  if(el>=TOTAL&&tState.run){tState={run:false,acc:TOTAL,since:0};store.set('timer',tState);toast('수업 시간이 끝났습니다')}
  $('#tStart').textContent=tState.run?'일시정지':(el>0?'계속':'시작')}
-$('#tStart').onclick=()=>{if(tState.run){tState={run:false,acc:elapsed(),since:0}}else{tState={run:true,acc:tState.acc,since:Date.now()}}store.set('timer',tState);tick()};
-$('#tReset').onclick=()=>{if(elapsed()>0&&!confirm('타이머를 처음으로 되돌릴까요?'))return;tState={run:false,acc:0,since:0};lastSeg=-1;store.set('timer',tState);tick()};
+$('#tStart').onclick=()=>{if(tState.run){tState={run:false,acc:elapsed(),since:0}}else{tState={run:true,acc:tState.acc,since:Date.now()}}store.set('timer',tState);tick();window.__pub&&window.__pub()};
+$('#tReset').onclick=()=>{if(elapsed()>0&&!confirm('타이머를 처음으로 되돌릴까요?'))return;tState={run:false,acc:0,since:0};lastSeg=-1;store.set('timer',tState);tick();window.__pub&&window.__pub()};
 tick();setInterval(tick,1000);
 
+
+/* ---------- live sync: teacher -> students ---------- */
+const isTeacher=()=>document.documentElement.dataset.teacher==='on';
+let lastOpenSeg=0;
+tl.addEventListener('toggle',e=>{const d=e.target.closest('.seg');if(d&&d.open){lastOpenSeg=+d.dataset.i;window.__pub&&window.__pub()}},true);
+const curTab=()=>(document.querySelector('section.panel.active')||{}).id||'overview';
+const state=()=>({v:1,tab:curTab(),seg:lastOpenSeg,timer:tState,at:Date.now()});
+let room=qs.get('room');let bc=null;
+const topic=c=>'creatup-vibe-w1-'+c;
+const newCode=()=>Array.from(crypto.getRandomValues(new Uint8Array(6)),b=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b%32]).join('');
+if(!room){/* teacher side */
+  let code=store.get('syncCode',null);if(!code){code=newCode();store.set('syncCode',code)}
+  let live=false,timer=null;
+  const studentLink=()=>location.origin+location.pathname+'?mode=student&room='+code;
+  const paint=()=>{$('#syncCode').textContent=code;$('#syncToggle').textContent=live?'연동 멈추기':'연동 시작';$('#syncDot').classList.toggle('live',live)};
+  const send=()=>{if(!live||!isTeacher())return;const msg=JSON.stringify(state());try{bc&&bc.postMessage(msg)}catch(e){}fetch('https://ntfy.sh/'+topic(code),{method:'POST',body:msg}).catch(()=>toast('연동 전송에 실패했습니다. 인터넷 연결을 확인하세요.'))};
+  window.__pub=()=>{clearTimeout(timer);timer=setTimeout(send,250)};
+  $('#syncBtn').onclick=e=>{e.stopPropagation();const p=$('#syncPop');p.classList.toggle('on');$('#syncBtn').setAttribute('aria-expanded',p.classList.contains('on'))};
+  document.addEventListener('click',e=>{if(!e.target.closest('#syncPop,#syncBtn'))$('#syncPop').classList.remove('on')});
+  $('#syncToggle').onclick=()=>{live=!live;if(live){bc=('BroadcastChannel' in window)?new BroadcastChannel(topic(code)):null;send();toast('연동을 시작했습니다')}else{bc&&bc.close();bc=null;toast('연동을 멈췄습니다')}paint()};
+  $('#syncCopy').onclick=e=>copyText(studentLink(),e.currentTarget);
+  $('#syncNew').onclick=()=>{if(live&&!confirm('새 코드를 만들면 지금 연결된 수강생 화면은 더 이상 따라오지 않습니다. 계속할까요?'))return;code=newCode();store.set('syncCode',code);if(live){bc&&bc.close();bc=('BroadcastChannel' in window)?new BroadcastChannel(topic(code)):null;send()}paint()};
+  setInterval(()=>{if(live)send()},60000);
+  paint();
+}else{/* student side */
+  room=room.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+  let follow=true,lastAt=0;
+  const bar=$('#followBar');bar.classList.add('on');
+  const paint=()=>{bar.classList.toggle('paused',!follow);$('#followTxt').innerHTML=follow?'<span class="dot live"></span>강사 화면을 따라가는 중':'<span class="dot"></span>따라가기를 멈췄습니다';$('#followBtn').textContent=follow?'잠시 멈추기':'다시 따라가기'};
+  let pending=null;
+  const apply=m=>{let d;try{d=JSON.parse(m)}catch(e){return}if(!d||d.v!==1||d.at<lastAt)return;lastAt=d.at;pending=d;if(!follow)return;
+    if(d.timer){tState=d.timer;store.set('timer',tState);tick()}
+    const tgt=d.tab&&document.getElementById(d.tab);if(tgt&&!tgt.classList.contains('teacher-only')&&d.tab!==curTab())show(d.tab);
+    if(d.tab==='flow'&&typeof d.seg==='number'){const el=document.querySelector(`.seg[data-i="${d.seg}"]`);if(el&&!el.open){el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'})}}};
+  $('#followBtn').onclick=()=>{follow=!follow;paint();if(follow&&pending){lastAt=0;apply(JSON.stringify(pending))}};
+  if('BroadcastChannel' in window){const b=new BroadcastChannel(topic(room));b.onmessage=e=>apply(e.data)}
+  fetch('https://ntfy.sh/'+topic(room)+'/json?poll=1&since=latest').then(r=>r.text()).then(t=>{const ln=t.trim().split('\n').filter(Boolean).pop();if(ln){const j=JSON.parse(ln);if(j.event==='message')apply(j.message)}}).catch(()=>{});
+  const connect=()=>{const es=new EventSource('https://ntfy.sh/'+topic(room)+'/sse');es.onmessage=e=>{try{const j=JSON.parse(e.data);if(j.event==='message')apply(j.message)}catch(_){}};es.onerror=()=>{}};
+  connect();paint();
+}
 /* ---------- prompts ---------- */
 const PR=[
  {c:'설계',t:'0 · 첫 요청: 앱의 범위 알려주기',w:'10~20분',p:'사진 제출 꾸러미를 만드는 웹앱을 만들 거야.\n사용자는 사진 여러 장을 넣고, 규격·순서·파일명을 정한 뒤, 정리된 사진을 ZIP으로 받아.\n오늘은 한 단계씩 만들 거니까, 지금은 화면 구성만 잡아줘.\n왼쪽은 사진 목록, 오른쪽은 설정, 아래는 결과와 다운로드 영역이야.\n사진은 외부로 전송하지 말고 브라우저 안에서만 처리해줘.'},
